@@ -1,7 +1,10 @@
 # Handyman-mobile-app
 The mobile app for handyman hackathon project. This project was bootstrapped with [Expo](https://expo.io/).
 See [Installation steps](https://docs.expo.io/versions/latest/introduction/installation/).
-Demo of project here https://expo.io/@mazinoukah/HandyMan
+
+Demo of project here https://expo.io/@mazinoukah/
+
+Download [Android version](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40mazinoukah/HandyMan-fc4db0062e2442a4ac8b1e3e626a79fe-signed.apk)
 
 
 ## How to setup
