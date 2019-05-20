@@ -4,7 +4,6 @@ import { KeyboardAvoidingView, LayoutAnimation, Platform, StyleSheet, UIManager 
 import { Image, View, Text } from 'react-native-animatable'
 
 import imgLogo from '../../assets/images/splash.png'
-// import metrics from '../../config/metrics'
 
 import { Dimensions } from 'react-native'
 
@@ -88,16 +87,13 @@ export default class AuthScreen extends Component {
   }
 
   render () {
+    console.log('props', this.props);
     const { isLoggedIn, isLoading, signup, login } = this.props
     const { visibleForm } = this.state
     // The following style is responsible of the "bounce-up from bottom" animation of the form
     const formStyle = (!visibleForm) ? { height: 0 } : { marginTop: 40 }
     return (
       <View style={styles.container}>
-
-        {/* <View >
-          <Text >HandyMan</Text>
-        </View> */}
         <Image
           animation={'bounceIn'}
           duration={1200}
@@ -121,16 +117,12 @@ export default class AuthScreen extends Component {
             <SignupForm
               ref={(ref) => this.formRef = ref}
               onLoginLinkPress={() => this._setVisibleForm('LOGIN')}
-              onSignupPress={signup}
-              isLoading={isLoading}
             />
           )}
           {(visibleForm === 'LOGIN') && (
             <LoginForm
               ref={(ref) => this.formRef = ref}
               onSignupLinkPress={() => this._setVisibleForm('SIGNUP')}
-              onLoginPress={login}
-              isLoading={isLoading}
               {...this.props}
             />
           )}
@@ -148,7 +140,6 @@ const styles = StyleSheet.create({
     height: metrics.DEVICE_HEIGHT,
     paddingTop: 24,
     backgroundColor: 'white',
-    // backgroundColor: '#fbd800',
   },
   logoImg: {
     flex: 1,

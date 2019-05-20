@@ -1,10 +1,9 @@
-import React from 'react';
+
 import { createAppContainer, createSwitchNavigator, createStackNavigator } from 'react-navigation';
 
 import MainTabNavigator from './MainTabNavigator';
 
 import Auth from '../screens/AuthScreen';
-// import Home from '../screens/Home';
 
 const AuthStack = createStackNavigator({
   Auth: {
@@ -22,7 +21,6 @@ export default createAppContainer(createSwitchNavigator({
   Main: MainTabNavigator,
   Auth: AuthStack,
 },
-
 {
   initialRouteName: 'Auth',
 }

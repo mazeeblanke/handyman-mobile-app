@@ -5,10 +5,8 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
-import { WebBrowser } from 'expo';
 
 import {
   Modal,
@@ -16,23 +14,24 @@ import {
   Provider
 } from '@ant-design/react-native';
 
-import { MonoText } from '../components/StyledText';
 import { connect } from 'react-redux';
-// import { SectionList } from 'react-native';
 import { List, Switch } from '@ant-design/react-native';
-import Dialog, { DialogFooter, DialogButton, DialogContent, DialogTitle } from 'react-native-popup-dialog';
+import { Notifications, Permissions } from 'expo';
+import Dialog, {
+  DialogFooter,
+  DialogButton,
+  DialogContent,
+  DialogTitle
+} from 'react-native-popup-dialog';
 import * as actions from '../App';
 import Spinner from 'react-native-loading-spinner-overlay';
 const Item = List.Item;
 const Brief = Item.Brief;
 
-import { Notifications, Permissions, Constants } from 'expo';
-
 class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
-
 
   state = {
     showModal: false,
@@ -45,29 +44,18 @@ class HomeScreen extends React.Component {
   }
 
   registerForPushNotificationsAsync = async () => {
-    // console.log('sds');
     const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
-    // if (status !== 'granted') {
-    //   // return;
-    // }
+    if (status !== 'granted') {
+      return;
+    }
     let deviceToken = await Notifications.getExpoPushTokenAsync();
-    // Defined in following steps
-
-    // console.log('dkfkdf');
     this.props.registerToken({ deviceToken }).then(() => {
-      console.log('kdlfldf kfl');
       this.notificationSubscription = Notifications.addListener(this.handleNotification);
     })
   }
 
   handleNotification = ({ data, origin }) => {
-    // this.setState({ notification });
-
-    console.log('hshhdsj hsd shdjhs dh', data, origin);
     const { title, message, orderId } = data
-
-    console.log('djfdf', data, origin);
-
     if (origin === 'selected') {
       this.props.setOrderId(orderId);
       this.setState({
@@ -75,18 +63,14 @@ class HomeScreen extends React.Component {
         spinnerText: 'Accepting new handy request...'
       });
 
+      // Mock the 'Accepting request' action
       setTimeout(() => {
         this.setState({
           spinner: false
         });
-
-        console.log('setting avaliability to false');
         this.props.setAvailabilityStatus({ availabiltyStatus: false })
-
       }, 4000)
     } else {
-      console.log('mazino got itt', data, title, message, orderId);
-
       const localNotification = {
         title: title,
         body: message,
@@ -99,19 +83,11 @@ class HomeScreen extends React.Component {
         console.log(err)
       })
     }
-
-    //
-
-
-
   }
 
   async componentDidMount() {
-    // console.log('mosnd ');
     this.registerForPushNotificationsAsync().then(() => {
-      // console.log('mosnd ');
     });
-
   }
 
   warnUser = (e) => {

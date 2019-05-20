@@ -2,17 +2,14 @@ import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
 import AppNavigator from './navigation/AppNavigator';
-
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 import { Provider } from 'react-redux';
 import axios from 'axios';
-import { Notifications, Permissions, Constants } from 'expo';
 import {AsyncStorage} from 'react-native';
 
 const URL = 'https://cryptic-dusk-24156.herokuapp.com/handyman';
-const PUSH_REGISTRATION_ENDPOINT = `${URL}/token`;
-const MESSAGE_ENPOINT = `${URL}/message`;
+
 
 let INITIAL_STATE = {
   isLoggedIn: false,
@@ -29,40 +26,31 @@ export const login = (username, password) => {
 
   return (dispatch) => {
     dispatch(SET_LOGIN_STATUS(true));
-
     return axios.post(`${URL}/login`, {
-      // for the sake of the hackathon we are usingn this user
+      // for the sake of the hackathon we are using this user
       username: 'arinze.nnaji',
       password: 'P@$$w0rd'
     }).then((res) => {
-
       axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`
-
       dispatch(SET_LOGIN_STATUS(false));
       dispatch(SET_TOKEN(res.data));
       dispatch(SET_USER(res.data));
-
     }).catch ((err) => {
-      console.log( 'eerri')
+      console.log( 'error')
     })
   }
 }
 
 
 export const setAvailabilityStatus = ( { availabiltyStatus }) => {
-  console.log('loging', `${URL}/me`, { available: availabiltyStatus });
-
   return (dispatch) => {
     dispatch(SET_LOADING_AVAILABLITY(true));
-
     return axios.patch(`${URL}/me`, { available: availabiltyStatus }).then((res) => {
-
       dispatch(SET_USER(res.data));
       dispatch(SET_LOADING_AVAILABLITY(false));
-
       return res.data
     }).catch ((err) => {
-      console.log( 'eerri')
+      console.log( 'error')
       dispatch(SET_LOADING_AVAILABLITY(false));
     })
   }
@@ -70,19 +58,14 @@ export const setAvailabilityStatus = ( { availabiltyStatus }) => {
 
 
 export const endJob = (orderId) => {
-  // console.log('ending job', `https://cryptic-dusk-24156.herokuapp.com/order/end/${orderId}`);
-
   return (dispatch) => {
     dispatch(SET_ENDING_JOB(true));
-
     return axios.post(`https://cryptic-dusk-24156.herokuapp.com/order/end/${orderId}`).then((res) => {
-
       dispatch(SET_ENDING_JOB(false));
       dispatch(SET_ORDER_ID(null));
-
       return res.data
     }).catch ((err) => {
-      console.log( 'eerri', err.data)
+      console.log( 'error', err.data)
       dispatch(SET_ENDING_JOB(false));
     })
   }
@@ -90,28 +73,25 @@ export const endJob = (orderId) => {
 
 
 export const setOrderId = (orderId) => {
-  // console.log('setting order id', orderId);
-
   return (dispatch) => {
-      dispatch(SET_ORDER_ID(orderId));
+    dispatch(SET_ORDER_ID(orderId));
   }
 }
 
 
+// Register the token of the device for push notifications
 export const registerToken = ( { deviceToken }) => {
-  // console.log('registering', `${URL}/me`, { deviceToken });
-
   return (dispatch) => {
-
     return axios.patch(`${URL}/me`, { deviceToken }).then((res) => {
-
       return res.data
     }).catch ((err) => {
-      console.log( 'eerri')
+      console.log( 'error')
     })
   }
 }
 
+
+// ACTION CREATORS
 export const SET_LOGIN_STATUS = (payload) => {
   return {
     type: 'SET_LOGIN_STATUS',
@@ -155,9 +135,8 @@ export const SET_TOKEN = (payload) => {
 }
 
 
-
+// MAIN/ROOT REDUCER
 const rootReducer = (state = INITIAL_STATE, action) => {
-
   switch(action.type) {
     case 'SET_LOGIN_STATUS': {
       return {
@@ -189,7 +168,6 @@ const rootReducer = (state = INITIAL_STATE, action) => {
         ...state,
         user: action.payload.handyman || action.payload,
       }
-      // console.log('newstate', newState);
       return newState
     }
     case 'SET_TOKEN': {
@@ -202,7 +180,6 @@ const rootReducer = (state = INITIAL_STATE, action) => {
       return state
     }
   }
-
 }
 
 
@@ -223,14 +200,10 @@ store.subscribe(() => {
   // console.log('sds', store.getState());
 })
 
-
-
 export default class App extends React.Component {
   state = {
     isLoadingComplete: false,
   };
-
-
 
   render() {
     if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
@@ -267,15 +240,10 @@ export default class App extends React.Component {
   };
 
   async componentDidMount() {
-    // this.askPermissions();
     await Font.loadAsync(
       'antoutline',
-      // eslint-disable-next-line
       require('@ant-design/icons-react-native/fonts/antoutline.ttf')
     );
-
-    // alert('sdjksd');
-
   }
 
 

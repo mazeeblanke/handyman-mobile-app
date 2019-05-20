@@ -2,12 +2,9 @@ import React, { Component } from 'react'
 // import PropTypes from 'prop-types';
 import { StyleSheet, AsyncStorage } from 'react-native';
 import { Text, View } from 'react-native-animatable'
-
 import CustomButton from '../../components/CustomButton'
 import CustomTextInput from '../../components/CustomTextInput'
-// import metrics from '../../config/metrics'
 import { connect } from 'react-redux';
-
 import { Dimensions, Platform } from 'react-native'
 
 const IS_ANDROID = Platform.OS === 'android'
@@ -51,14 +48,11 @@ class LoginForm extends Component {
   }
 
   componentDidMount () {
-    // console.log(this.props);
-    // console.log(actions);
   }
 
   render () {
-    // console.log
     const { username, password } = this.state
-    const { isLoading, onSignupLinkPress, onLoginPress } = this.props
+    const { onSignupLinkPress } = this.props
     const isValid = username !== '' && password !== ''
     return (
       <View style={styles.container}>
@@ -67,24 +61,24 @@ class LoginForm extends Component {
             name={'username'}
             ref={(ref) => this.emailInputRef = ref}
             placeholder={'Username'}
-            editable={!isLoading}
+            editable={!this.props.state.loggingIn}
             returnKeyType={'next'}
             blurOnSubmit={false}
             withRef={true}
             onSubmitEditing={() => this.passwordInputRef.focus()}
             onChangeText={(value) => this.setState({ username: value })}
-            isEnabled={!isLoading}
+            isEnabled={!this.props.state.loggingIn}
           />
           <CustomTextInput
             name={'password'}
             ref={(ref) => this.passwordInputRef = ref}
             placeholder={'Password'}
-            editable={!isLoading}
+            editable={!this.props.state.loggingIn}
             returnKeyType={'done'}
             secureTextEntry={true}
             withRef={true}
             onChangeText={(value) => this.setState({ password: value })}
-            isEnabled={!isLoading}
+            isEnabled={!this.props.state.loggingIn}
           />
         </View>
         <View style={styles.footer}>
@@ -117,10 +111,8 @@ class LoginForm extends Component {
 
 
 const mapStateToProps = (state) => {
-  // console.log(state)
   return {
     state,
-    // isLoggedIn: state.isLoggedIn
   }
 }
 

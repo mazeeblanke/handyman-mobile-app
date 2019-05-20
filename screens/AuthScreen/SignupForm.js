@@ -2,13 +2,9 @@ import React, { Component } from 'react'
 import { StyleSheet } from 'react-native'
 import { Text, View } from 'react-native-animatable'
 // import PropTypes from 'prop-types';
-
 import CustomButton from '../../components/CustomButton'
 import CustomTextInput from '../../components/CustomTextInput'
-// import metrics from '../../config/metrics'
-
 import { Dimensions, Platform } from 'react-native'
-
 const IS_ANDROID = Platform.OS === 'android'
 const { height, width } = Dimensions.get('window')
 
@@ -24,7 +20,6 @@ export default class SignupForm extends Component {
   //   onSignupPress: PropTypes.func.isRequired,
   //   onLoginLinkPress: PropTypes.func.isRequired
   // }
-
   state = {
     email: '',
     password: '',
